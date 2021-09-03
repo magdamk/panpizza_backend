@@ -2,17 +2,19 @@ POST http://localhost:3000/api/sign-up
 Content-Type: application/json
 
 {
-    "email": "a@a.pl",
-    "password": "alaall",
-    "password_repeat": "alaall"
+    "email": "c@a.pl",
+    "password": "clacla",
+    "password_repeat": "clacla"
 }
 ###
 POST http://localhost:3000/api/login
 Content-Type: application/json
 
 {
-    "email": "a@a.pl",
-    "password": "alaala",
-    "password_repeat": "alaala"
+    "email": "c@a.pl",
+    "password": "clacla"  
 }
+###
+GET http://localhost:3000/api/secret-route
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNAYS5wbCIsInVzZXJJZCI6IjYxMzIzZTVmNDZjZWM3ZGUyMTU5ZDcxNSIsImlhdCI6MTYzMDY4Mjk0OSwiZXhwIjoxNjMwNjg0MTQ5fQ.amxadJhRLLGAJWeSb-4dSBgkTSCZFiYxOzgLd2xW95s
 ###
