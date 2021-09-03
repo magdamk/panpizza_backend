@@ -9,14 +9,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         rquired: true
     },
-    first_name: {
+    /* first_name: {
         type: String,
         required: true
     },
     last_name: {
         type: String,
         required: true
-    },
+    },*/
     registered: {
         type: Date,
         required: true
@@ -25,6 +25,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    /*
     city: {
         type: String,
         required: true
@@ -44,7 +45,7 @@ const userSchema = new mongoose.Schema({
     zip: {
         type: String,
         required: true
-    },
+    }*/
 });
 
 module.exports = mongoose.model('User', userSchema);
