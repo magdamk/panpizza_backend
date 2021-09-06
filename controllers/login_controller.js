@@ -20,10 +20,10 @@ exports.postSignUp = async(req, res, next) => {
                 password: hashedPassword
             })
             const addedUser = await newUser.save();
-            res.status(201).send({ message: 'Registered!' });
+            res.status(201).send({ msg: 'Registered!' });
         }
     } catch (err) {
-        res.status(500).json({ message: err.message })
+        res.status(500).json({ msg: err.message })
     }
 }
 
@@ -53,12 +53,12 @@ exports.postLogin = async(req, res, next) => {
                 console.log(token)
                 checkUser[0].last_login = new Date();
                 const updatedUserLogin = await checkUser[0].save()
-                res.status(201).send({ message: 'Logged in!' });
+                res.status(201).send({ msg: 'Logged in!', token, user: checkUser[0].email });
             }
         }
 
     } catch (err) {
-        res.status(500).json({ message: err.message })
+        res.status(500).json({ msg: err.message })
     }
 }
 
