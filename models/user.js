@@ -9,6 +9,18 @@ const userSchema = new mongoose.Schema({
         type: String,
         rquired: true
     },
+    token: {
+        type: String
+    },
+    active: {
+        type: Boolean,
+        default: false
+    },
+    role: {
+        type: String,
+        required: true,
+        default: "user"
+    },
     /* first_name: {
         type: String,
         required: true

@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 require('dotenv').config();
+const validator = require("email-validator");
 // poprawić do modelu 
 module.exports = {
     validateRegister: (req, res, next) => {
@@ -8,6 +9,12 @@ module.exports = {
         if (!req.body.email || req.body.email < 3) {
             return res.status(400).send({
                 msg: 'Please enter a name with min. 3 chars'
+            });
+        }
+        // valide email
+        if (!req.body.email || !validator.validate(req.body.email)) {
+            return res.status(400).send({
+                msg: "Please enter a valid email address",
             });
         }
         // password min 6 chars

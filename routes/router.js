@@ -9,6 +9,7 @@ const userMiddleware = require('../middleware/users.js');
 const loginController = require('../controllers/login_controller');
 
 router.post('/sign-up', userMiddleware.validateRegister, loginController.postSignUp);
+router.get("/verify/:userID/:token", loginController.getVerify);
 router.post('/login', loginController.postLogin);
 router.get('/secret-route', userMiddleware.isLoggedIn, loginController.getSecretRoute);
 
