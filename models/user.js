@@ -23,9 +23,13 @@ const userSchema = new mongoose.Schema({
     },
     first_name: {
         type: String,
+        required: true,
+        default: ' '
     },
     last_name: {
         type: String,
+        required: true,
+        default: ' '
     },
     registered: {
         type: Date,
@@ -37,21 +41,33 @@ const userSchema = new mongoose.Schema({
     },
     city: {
         type: String,
+        required: true,
+        default: ' '
     },
     street: {
         type: String,
+        required: true,
+        default: ' '
     },
     house: {
         type: String,
+        required: true,
+        default: ' '
     },
     flat: {
         type: String,
+        required: false,
+        default: ''
     },
     zip: {
         type: String,
+        required: true,
+        default: ' '
     },
     phone: {
-        type: Number
+        type: Number,
+        required: true,
+        default: ' '
     }
 });
 
