@@ -40,6 +40,7 @@ exports.getVerify = async(req, res, next) => {
     try {
         let userID = req.params.userID;
         let token = req.params.token;
+        console.log(userID, ' ', token);
         let checkUser = await User.find({ _id: userID });
         console.log("verify", checkUser);
         // no result from database
