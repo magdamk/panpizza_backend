@@ -28,7 +28,6 @@ exports.postSignUp = async(req, res, next) => {
                 addedUser._id,
                 addedUser.token
             );
-            console.log(sentMail);
             res.status(201).send({ msg: 'Registered! Please check your e-mail account for activation link.' });
         }
     } catch (err) {
@@ -40,9 +39,7 @@ exports.getVerify = async(req, res, next) => {
     try {
         let userID = req.params.userID;
         let token = req.params.token;
-        console.log(userID, ' ', token);
         let checkUser = await User.find({ _id: userID });
-        console.log("verify", checkUser);
         // no result from database
         if (!checkUser.length) {
             return res.status(409).send({
@@ -100,10 +97,8 @@ exports.postLogin = async(req, res, next) => {
                         expiresIn: '20m'
                     }
                 );
-                console.log(token)
                 checkUser[0].last_login = new Date();
                 const updatedUserLogin = await checkUser[0].save()
-                console.log(checkUser[0].email)
                 res.status(201).send({ msg: 'Logged in!', token, email: checkUser[0].email, role: checkUser[0].role });
             }
         }
