@@ -29,7 +29,7 @@ exports.postSignUp = async(req, res, next) => {
                 addedUser.token
             );
             console.log(sentMail);
-            res.status(201).send({ msg: 'Registered!' });
+            res.status(201).send({ msg: 'Registered! Please check your e-mail account for activation link.' });
         }
     } catch (err) {
         res.status(500).json({ msg: err.message })
@@ -82,7 +82,7 @@ exports.postLogin = async(req, res, next) => {
         } else {
             if (!checkUser[0].active) {
                 return res.status(401).send({
-                    msg: "Your account is not activated!",
+                    msg: "Your account is not activated! Please check your e-mail account for activation link.",
                 });
             }
             const isValid = await bcrypt.compare(req.body.password, checkUser[0].password);
