@@ -73,7 +73,7 @@ exports.getVerify = async(req, res, next) => {
 
 exports.postLogin = async(req, res, next) => {
     try {
-        let checkUser = await User.find({ email: req.body.email });
+        let checkUser = await User.find({ email: req.body.email.toLowerCase() });
         // console.log(checkUser);
         if (!checkUser.length) {
             res.status(401).send({
@@ -102,7 +102,8 @@ exports.postLogin = async(req, res, next) => {
                 console.log(token)
                 checkUser[0].last_login = new Date();
                 const updatedUserLogin = await checkUser[0].save()
-                res.status(201).send({ msg: 'Logged in!', token, user: checkUser[0].email });
+                console.log(checkUser[0].email)
+                res.status(201).send({ msg: 'Logged in!', token, email: checkUser[0].email });
             }
         }
 
