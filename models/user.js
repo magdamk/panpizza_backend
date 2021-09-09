@@ -21,14 +21,12 @@ const userSchema = new mongoose.Schema({
         required: true,
         default: "user"
     },
-    /* first_name: {
+    first_name: {
         type: String,
-        required: true
     },
     last_name: {
         type: String,
-        required: true
-    },*/
+    },
     registered: {
         type: Date,
         required: true
@@ -37,27 +35,24 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    /*
     city: {
         type: String,
-        required: true
     },
     street: {
         type: String,
-        required: true
     },
     house: {
         type: String,
-        required: true
     },
     flat: {
         type: String,
-        required: false
     },
     zip: {
         type: String,
-        required: true
-    }*/
+    },
+    phone: {
+        type: Number
+    }
 });
 
 module.exports = mongoose.model('User', userSchema);
