@@ -31,7 +31,6 @@ exports.updateUserData = async(req, res, next) => {
     try {
         let checkUser = await User.find({ email: req.params.email.toLowerCase() });
         if (!checkUser.length) {
-            console.log('gucio!');
             res.status(409).send({
                 msg: 'User not found'
             });
@@ -46,7 +45,6 @@ exports.updateUserData = async(req, res, next) => {
             if (req.body.city) user.city = req.body.city;
             if (req.body.phone) user.phone = req.body.phone;
             const updatedUser = await user.save();
-
             res.status(201).send({ userData: updatedUser, msg: '' });
         }
     } catch (err) {
