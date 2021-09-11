@@ -18,7 +18,9 @@ router.get('/user/:email', userMiddleware.isLoggedIn, userController.getUserData
 router.patch('/user/:email', userMiddleware.isLoggedIn, userController.updateUserData);
 
 router.get('/home', itemController.getAllItems);
-router.post('/home', itemController.addItem);
+router.get('/home/:itemID', userMiddleware.isLoggedIn, userMiddleware.isAdmin, itemController.getItemByID);
+router.patch('/home/:itemID', userMiddleware.isLoggedIn, userMiddleware.isAdmin, itemController.updateItem);
+router.post('/home/add', userMiddleware.isLoggedIn, userMiddleware.isAdmin, itemController.addMenuItem);
 
 router.get('/secret-route', userMiddleware.isLoggedIn, userMiddleware.isAdmin, loginController.getSecretRoute);
 

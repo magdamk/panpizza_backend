@@ -109,6 +109,5 @@ exports.postLogin = async(req, res, next) => {
 }
 
 exports.getSecretRoute = (req, res, next) => {
-    console.log(req.userData);
     res.send('This is the secret content. Only logged in users can see that!');
 }

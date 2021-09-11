@@ -13,6 +13,14 @@ const itemSchema = new mongoose.Schema({
         type: String,
         rquired: true
     },
+    type: {
+        type: String,
+        rquired: true
+    },
+    position: {
+        type: Number,
+        required: true
+    },
     available: {
         type: Boolean,
         default: false
