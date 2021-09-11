@@ -2,7 +2,8 @@ const User = require('../models/user');
 
 exports.getUserData = async(req, res, next) => {
     try {
-        let checkUser = await User.find({ email: req.params.email.toLowerCase() });
+        let userID = req.userData.userId;
+        let checkUser = await User.find({ _id: userID });
         if (!checkUser.length) {
             res.status(409).send({
                 msg: 'User not found'
@@ -29,7 +30,8 @@ exports.getUserData = async(req, res, next) => {
 
 exports.updateUserData = async(req, res, next) => {
     try {
-        let checkUser = await User.find({ email: req.params.email.toLowerCase() });
+        let userID = req.userData.userId;
+        let checkUser = await User.find({ _id: userID });
         if (!checkUser.length) {
             res.status(409).send({
                 msg: 'User not found'

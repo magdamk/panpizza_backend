@@ -8,6 +8,7 @@ const router = express.Router();
 const userMiddleware = require('../middleware/users.js');
 const loginController = require('../controllers/login_controller');
 const userController = require('../controllers/user_controller')
+const itemController = require('../controllers/item_controller')
 
 router.post('/sign-up', userMiddleware.validateRegister, loginController.postSignUp);
 router.get("/verify/:userID/:token", loginController.getVerify);
@@ -15,6 +16,9 @@ router.post('/login', loginController.postLogin);
 
 router.get('/user/:email', userMiddleware.isLoggedIn, userController.getUserData);
 router.patch('/user/:email', userMiddleware.isLoggedIn, userController.updateUserData);
+
+router.get('/home', itemController.getAllItems);
+router.post('/home', itemController.addItem);
 
 router.get('/secret-route', userMiddleware.isLoggedIn, userMiddleware.isAdmin, loginController.getSecretRoute);
 
