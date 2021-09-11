@@ -50,11 +50,8 @@ module.exports = {
         }
     },
     isAdmin: async(req, res, next) => {
-        console.log('test isAdmin');
         try {
-            console.log(req.userData);
             let checkUser = await User.find({ email: req.userData.email.toLowerCase() });
-            console.log(checkUser[0].role);
             if (checkUser[0].role !== 'admin') return res.status(401).send({
                 msg: 'Access denied!'
             });
