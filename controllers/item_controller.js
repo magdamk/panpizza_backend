@@ -58,10 +58,8 @@ exports.addMenuItem = async(req, res, next) => {
             "position": req.body.position
         });
         const addedItem = await newItem.save();
-        console.log('item', addedItem);
         res.status(201).send({ item: addedItem, msg: 'Item added!' });
     } catch (err) {
-        console.log('add-item-error');
         res.status(500).json({ msg: err.message })
     }
 }
