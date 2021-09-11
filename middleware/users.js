@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 require('dotenv').config();
 const validator = require("email-validator");
+const User = require('../models/user');
 // poprawić do modelu 
 module.exports = {
     validateRegister: (req, res, next) => {
@@ -45,6 +46,24 @@ module.exports = {
         } catch (err) {
             return res.status(401).send({
                 msg: 'Your session is not valid!'
+            });
+        }
+    },
+    isAdmin: async(req, res, next) => {
+        console.log('test isAdmin');
+        try {
+            console.log(req.userData);
+            let checkUser = await User.find({ email: req.userData.email.toLowerCase() });
+            console.log(checkUser[0].role);
+            if (checkUser[0].role !== 'admin') return res.status(401).send({
+                msg: 'Access denied!'
+            });
+            else {
+                next();
+            }
+        } catch (err) {
+            return res.status(401).send({
+                msg: 'Access denied!'
             });
         }
     }

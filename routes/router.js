@@ -16,6 +16,6 @@ router.post('/login', loginController.postLogin);
 router.get('/user/:email', userMiddleware.isLoggedIn, userController.getUserData);
 router.post('/user/:email', userMiddleware.isLoggedIn, userController.updateUserData);
 
-router.get('/secret-route', userMiddleware.isLoggedIn, loginController.getSecretRoute);
+router.get('/secret-route', userMiddleware.isLoggedIn, userMiddleware.isAdmin, loginController.getSecretRoute);
 
 module.exports = router;

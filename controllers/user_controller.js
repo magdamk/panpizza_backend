@@ -20,7 +20,6 @@ exports.getUserData = async(req, res, next) => {
                 zip: user.zip,
                 phone: user.phone
             }
-            console.log(userData);
             res.status(201).send({ userData: userData, msg: '' });
         }
     } catch (err) {
