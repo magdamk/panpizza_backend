@@ -108,6 +108,15 @@ exports.postLogin = async(req, res, next) => {
     }
 }
 
+exports.deleteLogout = async(req, res, next) => {
+    try {
+        refreshTokens = refreshTokens.filter(token => token !== req.body.token);
+        res.status(204).sen({ msg: 'Logged out!' });
+    } catch (err) {
+        res.status(500).json({ msg: err.message })
+    }
+}
+
 exports.getSecretRoute = (req, res, next) => {
     res.send('This is the secret content. Only logged in users can see that!');
 }
