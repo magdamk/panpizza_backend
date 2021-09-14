@@ -91,7 +91,8 @@ exports.postLogin = async(req, res, next) => {
             } else {
                 const token = jwt.sign({
                         email: checkUser[0].email,
-                        userId: checkUser[0]._id
+                        userId: checkUser[0]._id,
+                        role: checkUser[0].role
                     },
                     process.env.SECRETKEY, {
                         expiresIn: '20m'

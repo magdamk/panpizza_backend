@@ -1,8 +1,26 @@
 const Item = require('../models/item');
+const User = require('../models/user');
+const jwt = require("jsonwebtoken");
 
 exports.getAllItems = async(req, res, next) => {
     try {
-        const menu = await Item.find({}).sort({ position: 1 });
+        const menu = { pizza: [], drink: [] };
+        let whoAsks = '';
+        const token = req.headers.authorization.split(' ')[1];
+        if (token) {
+            const decoded = jwt.verify(
+                token,
+                process.env.SECRETKEY
+            );
+            whoAsks = decoded.role;
+        }
+        if (whoAsks === 'admin') {
+            menu.pizza = await Item.find({ type: "pizza" }).sort({ position: 1 });
+            menu.drink = await Item.find({ type: "drink" }).sort({ position: 1 });
+        } else {
+            menu.pizza = await Item.find({ type: "pizza", available: true }).sort({ position: 1 });
+            menu.drink = await Item.find({ type: "drink", available: true }).sort({ position: 1 });
+        }
         res.status(201).send({ msg: 'Menu sent', menu });
     } catch (err) {
         res.status(500).json({ msg: err.message })
