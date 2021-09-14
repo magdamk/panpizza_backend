@@ -46,6 +46,28 @@ exports.updateItem = async(req, res, next) => {
     }
 }
 
+exports.deleteItem = async(req, res, next) => {
+    try {
+        const itemID = req.params.itemID;
+        console.log(itemID);
+        let checkItem = await Item.find({ _id: itemID });
+        console.log(checkItem);
+        if (!checkItem.length) {
+            res.status(409).send({
+                msg: 'Item not found'
+            });
+        } else {
+            const item = checkItem[0];
+            const deletedItem = await item.remove();
+            console.log(item);
+            res.status(201).send({ item: deletedItem, msg: 'Item deleted' });
+        }
+
+    } catch (err) {
+        res.status(500).json({ msg: err.message })
+    }
+}
+
 exports.addMenuItem = async(req, res, next) => {
     try {
         const newItem = new Item({

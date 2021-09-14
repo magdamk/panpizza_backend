@@ -1,9 +1,5 @@
 const express = require('express');
 const router = express.Router();
-//const User = require('../models/user');
-//const bcrypt = require('bcryptjs');
-//const uuid = require('uuid');
-//const jwt = require('jsonwebtoken');
 
 const userMiddleware = require('../middleware/users.js');
 const loginController = require('../controllers/login_controller');
@@ -21,6 +17,11 @@ router.get('/home', itemController.getAllItems);
 router.get('/home/:itemID', userMiddleware.isLoggedIn, userMiddleware.isAdmin, itemController.getItemByID);
 router.patch('/home/:itemID', userMiddleware.isLoggedIn, userMiddleware.isAdmin, itemController.updateItem);
 router.post('/home/add', userMiddleware.isLoggedIn, userMiddleware.isAdmin, itemController.addMenuItem);
+router.delete('/home/del/:itemID',
+    /*
+    userMiddleware.isLoggedIn, userMiddleware.isAdmin, 
+    */
+    itemController.deleteItem);
 
 router.get('/secret-route', userMiddleware.isLoggedIn, userMiddleware.isAdmin, loginController.getSecretRoute);
 
