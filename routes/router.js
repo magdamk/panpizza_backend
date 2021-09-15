@@ -34,7 +34,7 @@ router.post('/order/status/:orderID',
 router.get('/order/:userID',
     /* userMiddleware.isLoggedIn,*/
     orderController.getMyOrders);
-router.get('/order',
+router.get('/order/',
     /* userMiddleware.isLoggedIn, userMiddleware.isAdmin,*/
     orderController.getAllOrders);
 

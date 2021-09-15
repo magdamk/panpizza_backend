@@ -50,9 +50,15 @@ exports.getMyOrders = async(req, res, next) => {
 
 exports.getAllOrders = async(req, res, next) => {
     try {
+        const query = req.query;
+        console.log('query: ', query);
+        const criteria = {};
         let today = new Date();
         today = today.toDateString();
-        const checkOrders = await Order.find({ dateString: today }).sort({ date: 1 });
+        if (query.user) { criteria.user = query.user };
+        if (query.dateString) { criteria.dateString = query.dateString } else { criteria.dateString = today };
+        console.log('criteria: ', criteria);
+        const checkOrders = await Order.find(criteria).sort({ date: -1 });
         console.log(checkOrders);
         res.status(201).send({ msg: 'Orders sent!', checkOrders });
     } catch (err) {
