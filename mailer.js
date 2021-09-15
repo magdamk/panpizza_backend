@@ -26,4 +26,16 @@ module.exports = {
 
         await transporter.sendMail(mail);
     },
+    async sendOrderMail(email, userID) {
+
+        let mail = {
+            from: process.env.SENDER_MAIL,
+            to: email,
+            subject: "Your order accepted",
+            text: `Your order has been accepted. Wait for your delivery.`,
+            html: `<p>Your order has been accepted. Wait for your delivery.</p>`,
+        };
+
+        await transporter.sendMail(mail);
+    },
 };

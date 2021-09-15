@@ -15,7 +15,8 @@ const itemSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        rquired: true
+        rquired: true,
+        enum: ["pizza", "drink"]
     },
     position: {
         type: Number,

@@ -1,6 +1,7 @@
 const Item = require('../models/item');
 const User = require('../models/user');
 const Order = require('../models/order');
+const mailer = require("../mailer.js");
 
 exports.addOrder = async(req, res, next) => {
     try {
@@ -30,7 +31,15 @@ exports.changeOrderStatus = async(req, res, next) => {
         } else {
             console.log(checkOrder);
             checkOrder[0].status = req.body.status;
-            const updatedOrderStatus = await checkOrder[0].save()
+            const updatedOrderStatus = await checkOrder[0].save();
+
+            if (req.body.status === 'accepted') {
+                const userID = checkOrder[0].user;
+                const checkUser = await User.find({ _id: userID });
+                const sentMail = await mailer.sendOrderMail(checkUser[0].email);
+                //dodać usera - main i wysąłć mejl z potwierdzeniem przyjęcia zamówienia
+
+            };
             res.status(201).send({ msg: 'Status changed!', updatedOrderStatus });
         }
     } catch (err) {
