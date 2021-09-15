@@ -29,10 +29,8 @@ exports.changeOrderStatus = async(req, res, next) => {
                 msg: 'Order not found!'
             });
         } else {
-            console.log(checkOrder);
             checkOrder[0].status = req.body.status;
             const updatedOrderStatus = await checkOrder[0].save();
-
             if (req.body.status === 'accepted') {
                 const userID = checkOrder[0].user;
                 const checkUser = await User.find({ _id: userID });
@@ -50,7 +48,6 @@ exports.changeOrderStatus = async(req, res, next) => {
 exports.getMyOrders = async(req, res, next) => {
     try {
         const checkOrders = await Order.find({ user: req.params.userID }).sort({ date: -1 });
-        console.log(checkOrders);
         res.status(201).send({ msg: 'Orders sent!', checkOrders });
     } catch (err) {
         res.status(500).json({ msg: err.message })
@@ -68,8 +65,26 @@ exports.getAllOrders = async(req, res, next) => {
         if (query.dateString) { criteria.dateString = query.dateString } else { criteria.dateString = today };
         console.log('criteria: ', criteria);
         const checkOrders = await Order.find(criteria).sort({ date: -1 });
-        console.log(checkOrders);
-        res.status(201).send({ msg: 'Orders sent!', checkOrders });
+        let orders = [];
+        for (let i = 0; i < checkOrders.length; i++) {
+            let user = await User.find({ _id: checkOrders[i].user });
+            let userData = {
+                    email: user[0].email,
+                    first_name: user[0].first_name,
+                    last_name: user[0].last_name,
+                    street: user[0].street,
+                    house: user[0].house,
+                    flat: user[0].flat,
+                    city: user[0].city,
+                    zip: user[0].zip,
+                    phone: user[0].phone
+                }
+                //console.log('findUser: ', userData);
+            orders[i] = checkOrders[i];
+            orders[i].userInfo = userData;
+
+        };
+        res.status(201).send({ msg: 'Orders sent!', orders });
     } catch (err) {
         res.status(500).json({ msg: err.message })
     }
