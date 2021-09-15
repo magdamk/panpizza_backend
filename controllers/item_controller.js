@@ -14,7 +14,7 @@ exports.getAllItems = async(req, res, next) => {
             );
             whoAsks = decoded.role;
         }
-        if (whoAsks === 'admin') {
+        if (whoAsks == 'admin') {
             menu.pizza = await Item.find({ type: "pizza" }).sort({ position: 1 });
             menu.drink = await Item.find({ type: "drink" }).sort({ position: 1 });
         } else {
