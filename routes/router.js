@@ -28,7 +28,15 @@ router.delete('/home/del/:itemID', userMiddleware.isLoggedIn, userMiddleware.isA
 router.post('/order/:userID',
     /* userMiddleware.isLoggedIn,*/
     orderController.addOrder);
-
+router.post('/order/status/:orderID',
+    /*userMiddleware.isLoggedIn, userMiddleware.isAdmin,*/
+    orderController.changeOrderStatus);
+router.get('/order/:userID',
+    /* userMiddleware.isLoggedIn,*/
+    orderController.getMyOrders);
+router.get('/order',
+    /* userMiddleware.isLoggedIn, userMiddleware.isAdmin,*/
+    orderController.getAllOrders);
 
 router.get('/secret-route', userMiddleware.isLoggedIn, userMiddleware.isAdmin, loginController.getSecretRoute);
 

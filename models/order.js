@@ -10,6 +10,10 @@ const orderSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
+    dateString: {
+        type: String,
+        required: true
+    },
     products: [{
 
         type: mongoose.Schema.Types.ObjectId,
