@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Item = require('../models/item');
 const User = require('../models/user');
 const Order = require('../models/order');
@@ -45,10 +46,19 @@ exports.changeOrderStatus = async(req, res, next) => {
     }
 }
 
-exports.getMyOrders = async(req, res, next) => {
+exports.getUserOrders = async(req, res, next) => {
     try {
-        const checkOrders = await Order.find({ user: req.params.userID }).sort({ date: -1 });
-        res.status(201).send({ msg: 'Orders sent!', checkOrders });
+        console.log(req.params.userID)
+        let checkOrders = await Order.aggregate([{ $match: { user: mongoose.Types.ObjectId(req.params.userID) } }, {
+            $lookup: {
+                from: 'items',
+                localField: 'products',
+                foreignField: '_id',
+                as: 'product'
+            }
+        }]).sort({ date: -1 });
+
+        res.status(201).send({ msg: 'Orders sent!', userOrders: checkOrders });
     } catch (err) {
         res.status(500).json({ msg: err.message })
     }
@@ -61,30 +71,29 @@ exports.getAllOrders = async(req, res, next) => {
         const criteria = {};
         let today = new Date();
         today = today.toDateString();
-        if (query.user) { criteria.user = query.user };
+        if (query.user) { criteria.user = mongoose.Types.ObjectId(query.user) };
         if (query.dateString) { criteria.dateString = query.dateString } else { criteria.dateString = today };
         console.log('criteria: ', criteria);
-        const checkOrders = await Order.find(criteria).sort({ date: -1 });
-        let orders = [];
-        for (let i = 0; i < checkOrders.length; i++) {
-            let user = await User.find({ _id: checkOrders[i].user });
-            let userData = {
-                    email: user[0].email,
-                    first_name: user[0].first_name,
-                    last_name: user[0].last_name,
-                    street: user[0].street,
-                    house: user[0].house,
-                    flat: user[0].flat,
-                    city: user[0].city,
-                    zip: user[0].zip,
-                    phone: user[0].phone
+        const checkOrders = await Order.aggregate([{ $match: criteria }, {
+                $lookup: {
+                    from: 'users',
+                    localField: 'user',
+                    foreignField: '_id',
+                    as: 'client'
                 }
-                //console.log('findUser: ', userData);
-            orders[i] = checkOrders[i];
-            orders[i].userInfo = userData;
+            },
+            {
+                $lookup: {
+                    from: 'items',
+                    localField: 'products',
+                    foreignField: '_id',
+                    as: 'product'
+                }
+            },
+            { $project: { client: { registered: 0, token: 0, role: 0, password: 0, active: 0, last_login: 0 } } }
+        ]).sort({ date: -1 });
 
-        };
-        res.status(201).send({ msg: 'Orders sent!', orders });
+        res.status(201).send({ msg: 'Orders sent!', orders: checkOrders });
     } catch (err) {
         res.status(500).json({ msg: err.message })
     }

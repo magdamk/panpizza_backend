@@ -31,9 +31,11 @@ router.post('/order/:userID',
 router.post('/order/status/:orderID',
     /*userMiddleware.isLoggedIn, userMiddleware.isAdmin,*/
     orderController.changeOrderStatus);
+// get orders for a specific user
 router.get('/order/:userID',
-    /* userMiddleware.isLoggedIn,*/
-    orderController.getMyOrders);
+    /*
+    userMiddleware.isLoggedIn, */
+    orderController.getUserOrders);
 router.get('/order/',
     /* userMiddleware.isLoggedIn, userMiddleware.isAdmin,*/
     orderController.getAllOrders);
