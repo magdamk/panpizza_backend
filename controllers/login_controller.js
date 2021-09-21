@@ -95,7 +95,7 @@ exports.postLogin = async(req, res, next) => {
                         role: checkUser[0].role
                     },
                     process.env.SECRETKEY, {
-                        expiresIn: '20m'
+                        expiresIn: process.env.EXPIRE
                     }
                 );
                 console.log(checkUser[0]._id);

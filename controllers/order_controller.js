@@ -11,7 +11,7 @@ exports.addOrder = async(req, res, next) => {
             "user": req.params.userID,
             "date": now,
             "dateString": now.toISOString().split("T")[0],
-            "status": 'new',
+            "status": 'pending',
             "payment": req.body.payment,
             "products": req.body.products
         });
@@ -32,7 +32,7 @@ exports.changeOrderStatus = async(req, res, next) => {
         } else {
             checkOrder[0].status = req.body.status;
             const updatedOrderStatus = await checkOrder[0].save();
-            if (req.body.status === 'accepted') {
+            if (req.body.status === 'in progress') {
                 const userID = checkOrder[0].user;
                 const checkUser = await User.find({ _id: userID });
                 const sentMail = await mailer.sendOrderMail(checkUser[0].email);
@@ -122,7 +122,7 @@ exports.getAllOrders = async(req, res, next) => {
             },
             { $project: { client: { registered: 0, token: 0, role: 0, password: 0, active: 0, last_login: 0 } } }
             //, { $group: { _id: "$status" } }
-        ]).sort({ status: 1, date: -1 });
+        ]).sort({ status: -1, date: -1 });
         console.log(checkOrders);
         res.status(201).send({ msg: 'Orders sent!', orders: checkOrders });
     } catch (err) {
