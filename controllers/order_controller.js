@@ -10,7 +10,7 @@ exports.addOrder = async(req, res, next) => {
         const newOrder = new Order({
             "user": req.params.userID,
             "date": now,
-            "dateString": now.toDateString(),
+            "dateString": now.toISOString().split("T")[0],
             "status": 'new',
             "payment": req.body.payment,
             "products": req.body.products
@@ -64,13 +64,43 @@ exports.getUserOrders = async(req, res, next) => {
     }
 }
 
+exports.getOrder = async(req, res, next) => {
+    try {
+
+        console.log('getOrder', req.params.orderID);
+        const checkedOrder = await Order.aggregate([{ $match: { _id: mongoose.Types.ObjectId(req.params.orderID) } },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'user',
+                    foreignField: '_id',
+                    as: 'client'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'items',
+                    localField: 'products',
+                    foreignField: '_id',
+                    as: 'product'
+                }
+            },
+            { $project: { client: { registered: 0, token: 0, role: 0, password: 0, active: 0, last_login: 0 } } }
+        ]);
+        console.log('single', checkedOrder);
+        res.status(201).send({ msg: 'Order sent!', order: checkedOrder });
+    } catch (err) {
+        res.status(500).json({ msg: err.message })
+    }
+}
+
 exports.getAllOrders = async(req, res, next) => {
     try {
         const query = req.query;
         console.log('query: ', query);
         const criteria = {};
         let today = new Date();
-        today = today.toDateString();
+        today = today.toISOString().split("T")[0];
         if (query.user) { criteria.user = mongoose.Types.ObjectId(query.user) };
         if (query.dateString) { criteria.dateString = query.dateString } else { criteria.dateString = today };
         console.log('criteria: ', criteria);
@@ -91,8 +121,9 @@ exports.getAllOrders = async(req, res, next) => {
                 }
             },
             { $project: { client: { registered: 0, token: 0, role: 0, password: 0, active: 0, last_login: 0 } } }
-        ]).sort({ date: -1 });
-
+            //, { $group: { _id: "$status" } }
+        ]).sort({ status: 1, date: -1 });
+        console.log(checkOrders);
         res.status(201).send({ msg: 'Orders sent!', orders: checkOrders });
     } catch (err) {
         res.status(500).json({ msg: err.message })
