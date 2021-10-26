@@ -19,7 +19,7 @@ router.patch('/user/:email', userMiddleware.isLoggedIn, userController.updateUse
 
 //Menu routes
 router.get('/home', itemController.getAllItems);
-router.get('/home/:itemID', userMiddleware.isLoggedIn, userMiddleware.isAdmin, itemController.getItemByID);
+router.get('/home/:itemID', userMiddleware.isLoggedIn, itemController.getItemByID);
 router.patch('/home/:itemID', userMiddleware.isLoggedIn, userMiddleware.isAdmin, itemController.updateItem);
 router.post('/home/add', userMiddleware.isLoggedIn, userMiddleware.isAdmin, itemController.addMenuItem);
 router.delete('/home/del/:itemID', userMiddleware.isLoggedIn, userMiddleware.isAdmin, itemController.deleteItem);

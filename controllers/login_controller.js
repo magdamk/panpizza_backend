@@ -98,7 +98,7 @@ exports.postLogin = async(req, res, next) => {
                         expiresIn: process.env.EXPIRE
                     }
                 );
-                console.log(checkUser[0]._id);
+                //  console.log(checkUser[0]._id);
                 checkUser[0].last_login = new Date();
                 const updatedUserLogin = await checkUser[0].save()
                 res.status(201).send({ msg: 'Logged in!', token, email: checkUser[0].email, role: checkUser[0].role });
@@ -110,10 +110,11 @@ exports.postLogin = async(req, res, next) => {
     }
 }
 
-exports.deleteLogout = async(req, res, next) => {
+
+exports.deleteLogout = (req, res) => {
     try {
         refreshTokens = refreshTokens.filter(token => token !== req.body.token);
-        res.status(204).sen({ msg: 'Logged out!' });
+        res.status(204).send({ msg: 'Logged out!' });
     } catch (err) {
         res.status(500).json({ msg: err.message })
     }
