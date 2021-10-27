@@ -25,9 +25,7 @@ router.post('/home/add', userMiddleware.isLoggedIn, userMiddleware.isAdmin, item
 router.delete('/home/del/:itemID', userMiddleware.isLoggedIn, userMiddleware.isAdmin, itemController.deleteItem);
 
 //Order routes
-router.post('/order/:userID',
-    /* userMiddleware.isLoggedIn,*/
-    orderController.addOrder);
+router.post('/order/:userID', userMiddleware.isLoggedIn, orderController.addOrder);
 router.patch('/order/status/:orderID', userMiddleware.isLoggedIn, userMiddleware.isAdmin, orderController.changeOrderStatus);
 // get orders for a specific user
 router.get('/order/:userID', userMiddleware.isLoggedIn, orderController.getUserOrders);

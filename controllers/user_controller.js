@@ -48,7 +48,6 @@ exports.updateUserData = async(req, res, next) => {
             if (req.body.city) user.city = req.body.city;
             if (req.body.phone) user.phone = req.body.phone;
             const updatedUser = await user.save();
-            console.log(updatedUser);
             const userData = {
                 email: updatedUser.email,
                 first_name: updatedUser.first_name,

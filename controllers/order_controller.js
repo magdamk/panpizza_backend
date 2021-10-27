@@ -48,7 +48,6 @@ exports.changeOrderStatus = async(req, res, next) => {
 
 exports.getUserOrders = async(req, res, next) => {
     try {
-        console.log(req.params.userID)
         let checkOrders = await Order.aggregate([{ $match: { user: mongoose.Types.ObjectId(req.params.userID) } }, {
             $lookup: {
                 from: 'items',
@@ -66,8 +65,6 @@ exports.getUserOrders = async(req, res, next) => {
 
 exports.getOrder = async(req, res, next) => {
     try {
-
-        console.log('getOrder', req.params.orderID);
         const checkedOrder = await Order.aggregate([{ $match: { _id: mongoose.Types.ObjectId(req.params.orderID) } },
             {
                 $lookup: {
@@ -87,7 +84,6 @@ exports.getOrder = async(req, res, next) => {
             },
             { $project: { client: { registered: 0, token: 0, role: 0, password: 0, active: 0, last_login: 0 } } }
         ]);
-        console.log('single', checkedOrder);
         res.status(201).send({ msg: 'Order sent!', order: checkedOrder });
     } catch (err) {
         res.status(500).json({ msg: err.message })
@@ -97,13 +93,11 @@ exports.getOrder = async(req, res, next) => {
 exports.getAllOrders = async(req, res, next) => {
     try {
         const query = req.query;
-        console.log('query: ', query);
         const criteria = {};
         let today = new Date();
         today = today.toISOString().split("T")[0];
         if (query.user) { criteria.user = mongoose.Types.ObjectId(query.user) };
         if (query.dateString) { criteria.dateString = query.dateString } else { criteria.dateString = today };
-        console.log('criteria: ', criteria);
         const checkOrders = await Order.aggregate([{ $match: criteria }, {
                 $lookup: {
                     from: 'users',
@@ -123,7 +117,6 @@ exports.getAllOrders = async(req, res, next) => {
             { $project: { client: { registered: 0, token: 0, role: 0, password: 0, active: 0, last_login: 0 } } }
             //, { $group: { _id: "$status" } }
         ]).sort({ status: -1, date: -1 });
-        console.log(checkOrders);
         res.status(201).send({ msg: 'Orders sent!', orders: checkOrders });
     } catch (err) {
         res.status(500).json({ msg: err.message })
