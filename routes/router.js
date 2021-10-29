@@ -32,6 +32,4 @@ router.get('/order/:userID', userMiddleware.isLoggedIn, orderController.getUserO
 router.get('/orders/:orderID', userMiddleware.isLoggedIn, orderController.getOrder);
 router.get('/order/', userMiddleware.isLoggedIn, userMiddleware.isAdmin, orderController.getAllOrders);
 
-router.get('/secret-route', userMiddleware.isLoggedIn, userMiddleware.isAdmin, loginController.getSecretRoute);
-
 module.exports = router;
