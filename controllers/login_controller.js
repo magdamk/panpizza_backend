@@ -100,7 +100,7 @@ exports.postLogin = async(req, res, next) => {
                 //  console.log(checkUser[0]._id);
                 checkUser[0].last_login = new Date();
                 const updatedUserLogin = await checkUser[0].save()
-                res.status(201).send({ msg: 'Logged in!', token, email: checkUser[0].email, role: checkUser[0].role, id: checkUser[0]._id });
+                res.status(201).send({ msg: 'Logged in!', token, email: checkUser[0].email, role: checkUser[0].role, id: checkUser[0]._id, phone: checkUser[0].phone });
             }
         }
 
